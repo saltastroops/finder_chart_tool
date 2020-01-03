@@ -6,29 +6,45 @@
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
 
     <script type="text/javascript">
+        function hide_input_field(id) {
+          document.querySelector(`#${id} input`).value = null;
+          document.getElementById(id).style.display = "none";
+        }
+
+        function show_input_field(id) {
+          document.getElementById(id).style.display = "";
+        }
+
       function mos() {
-        document.getElementById("mos_code").style.display="";
-        document.getElementById("propid").style.display="";
-        document.getElementById("pi_name").style.display="";
-        document.getElementById("object").style.display="";
-        document.getElementById("ra").style.display="none";
-        document.getElementById("dec").style.display="none";
-        document.getElementById("pa").style.display="none";
+        show_input_field("mos_mask");
+        hide_input_field("ra");
+        hide_input_field("dec");
+        hide_input_field("pa");
       }
 
-      function ls() {
-        document.getElementById("mos_code").style.display="none";
-        document.getElementById("propid").style.display="";
-        document.getElementById("pi_name").style.display="";
-        document.getElementById("object").style.display="";
-        document.getElementById("ra").style.display="";
-        document.getElementById("dec").style.display="";
-        document.getElementById("pa").style.display="";
-      }
+        function ls() {
+          hide_input_field("mos_mask");
+          show_input_field("ra");
+          show_input_field("dec");
+          show_input_field("pa");
+        }
+
+        function slot() {
+          hide_input_field("mos_mask");
+          show_input_field("ra");
+          show_input_field("dec");
+          show_input_field("pa");
+        }
+
+        function imaging() {
+          hide_input_field("mos_mask");
+          show_input_field("ra");
+          show_input_field("dec");
+          show_input_field("pa");
+        }
     </script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/bootstrap.file-input.js') }}"></script>
 </head>
 
 <body>
@@ -48,18 +64,18 @@
             </label>
             <label class="checkbox inline">
                 <input type="radio" name="mode" value="slot"
-                       onclick="ls()" /> Slot
+                       onclick="slot()" /> Slot
             </label>
             <label class="checkbox inline">
                 <input type="radio" name="mode" value="imaging"
-                       onclick="ls()" /> Imaging
+                       onclick="imaging()" /> Imaging
             </label>
         </div>
     </div>
-    <div class="control-group" id="mos_code">
+    <div class="control-group" id="mos_mask">
         <label class="control-label"><b>Mask XML Upload:</b></label>
         <div class="controls">
-            <input type="file" name="mos_mask"/>
+            <input class="form-control-file" type="file" name="mos_mask"/>
         </div>
     </div>
     <div class="control-group"  id="propid">
@@ -106,7 +122,7 @@
     <div class="control-group"  id="pa" style="display:none">
         <label class="control-label" for="pa"><b>PA:</b></label>
         <div class="controls">
-            <input type="number" name="position_angle" min="-180.0" max="180.0" step="0.5" value="0.0"/>
+            <input type="text" name="position_angle" placeholder="" value=""/>
         </div>
     </div>
     <div class="control-group">
