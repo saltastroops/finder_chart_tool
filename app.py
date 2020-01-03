@@ -1,3 +1,4 @@
+from io import BytesIO
 from typing import BinaryIO, Dict, Optional
 
 import astropy.units as u
@@ -60,7 +61,7 @@ def generate_finder_chart(user_input: Dict[str, str]) -> BinaryIO:
 
     # MOS Mask
     if 'mos_mask' in request.files and request.files['mos_mask'].filename:
-        mos_mask: Optional[BinaryIO] = request.files['mos_mask'].stream
+        mos_mask: Optional[BinaryIO] = BytesIO(request.files['mos_mask'].stream.read())
     else:
         mos_mask = None
 
