@@ -29,10 +29,13 @@ def finder_chart():
 
 
 def generate_finder_chart(user_input: Dict[str, str]) -> BinaryIO:
+    def no_value(key: str) -> bool:
+        return key not in user_input or user_input[key].strip() == ''
+
     # collect the parameters
 
     # survey
-    if 'survey' not in user_input:
+    if no_value('survey'):
         raise ValueError('survey parameter missing')
     surveys = [s for s in Survey if s.value.lower() == user_input['survey'].lower()]
     if not len(surveys):
@@ -40,7 +43,7 @@ def generate_finder_chart(user_input: Dict[str, str]) -> BinaryIO:
     survey = surveys[0]
 
     # mode
-    if 'mode' not in user_input:
+    if no_value('mode'):
         raise ValueError('mode parameter missing')
     modes = [m for m in Mode if m.value.lower() == user_input['mode'].lower()]
     if not len(modes):
@@ -48,7 +51,7 @@ def generate_finder_chart(user_input: Dict[str, str]) -> BinaryIO:
     mode = modes[0]
 
     # output format
-    if 'output_format' not in user_input:
+    if no_value('output_format'):
         raise ValueError('output_format parameter missing')
     output_formats = [of for of in OutputFormat if of.value.lower() == user_input['output_format'].lower()]
     if not len(output_formats):
@@ -66,30 +69,39 @@ def generate_finder_chart(user_input: Dict[str, str]) -> BinaryIO:
         mos_mask = None
 
     # target name
-    if 'object_name' not in user_input:
+    if no_value('object_name'):
         raise ValueError('object_name parameter missing')
     object_name = user_input['object_name']
 
     # PI
-    if 'pi_name' not in user_input:
+    if no_value('pi_name'):
         raise ValueError('pi_name parameter missing')
     pi_name = user_input['pi_name']
 
     # position angle
-    if 'position_angle' in user_input:
-        pa: Optional[Quantity] = float(user_input['position_angle']) * u.deg
+    if no_value('position_angle'):
+        pa: Optional[Quantity] = None
     else:
-        pa = None
+        pa = float(user_input['position_angle']) * u.deg
 
     # proposal code
-    if 'proposal_code'not in user_input:
+    if no_value('proposal_code'):
         raise ValueError('proposal_code parameter missing')
     proposal_code = user_input['proposal_code']
 
     # magnitude
-    bandpass = user_input.get('bandpass', None)
-    _min_magnitude = user_input.get('min_magnitude', None)
-    _max_magnitude = user_input.get('max_magnitude', None)
+    if no_value('bandpass'):
+        bandpass: Optional[str] = None
+    else:
+        bandpass = user_input['bandpass']
+    if no_value('min_magnitude'):
+        _min_magnitude: Optional[float] = None
+    else:
+        _min_magnitude = user_input.get('min_magnitude', None)
+    if no_value('max_magnitude'):
+        _max_magnitude: Optional[float] = None
+    else:
+        _max_magnitude = user_input.get('max_magnitude', None)
     mag_flag_count = 0
     if bandpass:
         mag_flag_count += 1
