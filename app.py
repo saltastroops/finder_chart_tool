@@ -222,3 +222,18 @@ def _parse_as_float(s):
     if not s:
         s = '0'
     return float(s)
+
+
+@app.errorhandler(404)
+def error_page(error):
+    return render_template('error.html', error=error), 404
+
+
+@app.errorhandler(ValueError)
+def error_page(error):
+    return render_template('error.html', error=error), 400
+
+
+@app.errorhandler(Exception)
+def error_page(error):
+    return render_template('error.html', error=error), 500
