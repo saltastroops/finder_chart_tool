@@ -84,6 +84,12 @@ def generate_finder_chart(user_input: Dict[str, str]) -> BinaryIO:
     else:
         pa = float(user_input['position_angle']) * u.deg
 
+    # slit width
+    if no_value('slitwidth'):
+        slitwidth = None
+    else:
+        slitwidth: Optional[Quantity] = float(user_input['slitwidth']) * u.arcsec
+
     # proposal code
     if no_value('proposal_code'):
         raise ValueError('proposal_code parameter missing')
@@ -134,7 +140,7 @@ def generate_finder_chart(user_input: Dict[str, str]) -> BinaryIO:
         bandpass=bandpass,
         survey=survey,
         position_angle=pa,
-        slitwidth=2 * u.arcsec,
+        slitwidth=slitwidth,
         mos_mask_rsmt=mos_mask,
         title=title
     )
